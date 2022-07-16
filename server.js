@@ -11,3 +11,10 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.status(200).send('success')
 })
+
+
+
+
+app.listen(PORT, () => {
+    console.log('connected to port 8080')
+})
