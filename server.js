@@ -7,6 +7,8 @@ const { v4: uuidv4 } = require('uuid');
 app.use(cors())
 app.use(express.json())
 
+let inventories = require('./data/inventories.json');
+let warehouses = require('./data/warehouses.json');
 
 app.get('/', (req, res) => {
     res.status(200).send('success')
