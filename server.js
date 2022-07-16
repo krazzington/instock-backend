@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const app = express();
 const PORT = 8080;
 
@@ -13,6 +14,8 @@ let warehouses = require('./data/warehouses.json');
 app.get('/', (req, res) => {
     res.status(200).send('success')
 })
+
+
 
 
 
