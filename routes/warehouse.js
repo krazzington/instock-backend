@@ -1,23 +1,19 @@
-router.put('/', (req, res) => {
-    
+const express = require("express");
+const router = express.Router();
+const cors = require("cors");
+const uuid = require("uuid");
+const fs = require("fs");
+router.use(cors());
+
+const warehouses = require("../data/warehouses.json");
+
+console.log(warehouses);
+
+router.delete ("/:id", (req,res) =>{
+    const deletedItem = warehouses.findIndex((item) => item.id === req.params.id);
+    warehouses.splice(deletedItem, 1);
+    fs.writeFileSync("./data/warehouses.json", JSON.stringify(warehouses));
+    res.send(warehouses)
 })
 
-router.patch('/', (req, res) => {
-    const { name, address, city, country {name, position, phone, email}} = req.body;
-    if (phone && email && isValidEmail(email)) {
-        warehouses.push({
-            id:
-            name: req.body.name;
-            address:
-            city:
-            country:
-            contact: {
-                name:
-                position:
-                phone:
-                email:
-            }
-        })
-        fs.writeFileSync('data/warehouses.json' JSON.stringify(warehouses))
-    }
-})
+module.exports = router;
