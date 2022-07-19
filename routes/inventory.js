@@ -1,6 +1,8 @@
 // Require Express Router
 const router = require('express').Router();
 const inventory = require('../data/inventories.json');
+const warehouse = require('../data/warehouses.json');
+const uuid = require("uuid");
 const fs = require('fs');
 
 //GET request to get an item
@@ -45,5 +47,40 @@ router.delete(`/:id`, (req, res) => {
     res.status(500);
   }
 });
+
+//POST an inventory
+router.post("/add", (req,res)=>{
+  let warehouseList = fs.readFileSync("./data/warehouses.json");
+  let warehouseParse = JSON.parse(warehouseList);
+  let whID = warehouseParse.filter((warehouse)=> warehouse.name === req.params.id)
+
+  const inventoryList = fs.readFileSync("./data/inventories.json");
+    let inventoryParse = JSON.parse(inventoryList);
+
+  const newItem = {
+    id: uuid.v4(),
+    itemName: req.body.itemName,
+    description: req.body.description,
+    quantity: req.body.quantity,
+    category: req.body.category,
+    status: req.body.stauts,
+    warehouseName: req.body.warehouseName,
+    warehouseId: whID
+  }
+  
+
+  if (Object.keys(newItem.length === 0)){
+    return res.status(403).send("Empty Values found")
+  }
+  else if (req.body.quantity < 0){
+    return res.status(403).send("Quantity cannot be less than 0")
+  }
+  else{
+    inventoryParse.push(newItem)
+  }
+  fs.writeFileSync("../data/inventories.json", JSON.stringify(inventory))
+  res.status(201).send(inventoryParse)
+
+})
 
 module.exports = router;
