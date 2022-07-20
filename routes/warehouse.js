@@ -16,4 +16,24 @@ router.delete ("/:id", (req,res) =>{
     res.send(warehouses)
 })
 
+router.patch ("/:id", (req, res) => {
+    const { name, address, city, country contactName, position, phone, email} = req.body;
+    if (phone && email) {
+        warehouses.push({
+            id: req.body.id,
+            name: req.body.name,
+            address: req.body.address,
+            city: req.body.city,
+            country: req.body.country,
+             {
+                contactName: req.body.contact.name,
+                position: req.body.contact.position,
+                phone: req.body.contact.phone,
+                email: req.body.contact.email
+            }
+        })
+        fs.writeFileSync('data/warehouses.json', JSON.stringify(warehouses));
+    }
+});
+
 module.exports = router;

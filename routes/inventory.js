@@ -26,4 +26,21 @@ router.get('/:id', (req, res) => {
   }
 });
 
+router.patch ("/:id", (req, res) => {
+  const { id, warehouseID, warehouseName, itemName, description, category, status, quantity} = req.body;
+      inventory.push({
+          id: req.body.id,
+          warehouseID: req.body.warehouseID,
+          itemName: req.body.itemName,
+          description: req.body.description,
+          category: req.body.category,
+          status: req.body.status,
+          quantity: req.body.quantity
+          }
+      )
+      fs.writeFileSync('data/warehouses.json', JSON.stringify(warehouses));
+  }
+);
+
+
 module.exports = router;
