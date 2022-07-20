@@ -39,27 +39,35 @@ router.delete('/:id', (req, res) => {
   res.send(warehouses);
 });
 
-<<<<<<< HEAD
-router.patch ("/:id", (req, res) => {
-    const { name, address, city, country contactName, position, phone, email} = req.body;
-    if (phone && email) {
-        warehouses.push({
-            id: req.body.id,
-            name: req.body.name,
-            address: req.body.address,
-            city: req.body.city,
-            country: req.body.country,
-             {
-                contactName: req.body.contact.name,
-                position: req.body.contact.position,
-                phone: req.body.contact.phone,
-                email: req.body.contact.email
-            }
-        })
-        fs.writeFileSync('data/warehouses.json', JSON.stringify(warehouses));
-    }
-});
+router.post('/', (req, res) => {
+    try {
+        if (warehouses) {
+    const { name, address, city, country, contactName, position, phone, email } = req.body
+    if (name && address && city && country && contactName && position && phoneValidation(phone) && emailValidation(email)){
+    warehouses.push({
+        id: uuid.v4(),
+        name: name,
+        address: address,
+        city: city,
+        country: country,
+        contact: {
+            name: contactName,
+            position: position,
+            phone: phone,
+            email: email
+        }
+    })
+    fs.writeFileSync('data/warehouses.json', JSON.stringify(warehouses))
+    res.status(200).json(warehouses);
+} else {
+    res.status(404).json({errorDetails: "All fields are mandatory for submission"})
+}
+} else {
+    res.status(404).json({errorDetails:"Warehouse could not be found"})
+}
+} catch(error){
+    req.sendStatus(500)
+}
+})
 
-=======
->>>>>>> 01e5b221425159d0226bb3e27c7ea86c0d6be737
 module.exports = router;
