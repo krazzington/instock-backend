@@ -32,7 +32,6 @@ router.get('/', (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 //GET inventory for single warehouse - TOM
 router.get('/:id', (req, res) => {
   const sglWrhseID = req.params.id;
@@ -49,12 +48,6 @@ router.delete("/:id", (req, res) => {
   const deletedItem = warehouses.findIndex((item) => item.id === req.params.id);
   warehouses.splice(deletedItem, 1);
   fs.writeFileSync("./data/warehouses.json", JSON.stringify(warehouses));
-=======
-router.delete('/:id', (req, res) => {
-  const deletedItem = warehouses.findIndex((item) => item.id === req.params.id);
-  warehouses.splice(deletedItem, 1);
-  fs.writeFileSync('./data/warehouses.json', JSON.stringify(warehouses));
->>>>>>> 01e5b221425159d0226bb3e27c7ea86c0d6be737
   res.send(warehouses);
 });
 
