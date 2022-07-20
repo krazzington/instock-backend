@@ -29,7 +29,6 @@ router.get('/:id', (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 
 //GET all inventory items - TOM
 router.get('/', (req, res) => {
@@ -43,7 +42,6 @@ router.get('/', (req, res) => {
   res.send(invList);
 });
 
-=======
 // DELETE an inventory
 
 router.delete(`/:id`, (req, res) => {
@@ -64,13 +62,13 @@ router.delete(`/:id`, (req, res) => {
 });
 
 //POST an inventory
-router.post("/add", (req,res)=>{
+router.post("/add", (req, res) => {
   let warehouseList = fs.readFileSync("./data/warehouses.json");
   let warehouseParse = JSON.parse(warehouseList);
-  let whID = warehouseParse.filter((warehouse)=> warehouse.name === req.params.id)
+  let whID = warehouseParse.filter((warehouse) => warehouse.name === req.params.id);
 
   const inventoryList = fs.readFileSync("./data/inventories.json");
-    let inventoryParse = JSON.parse(inventoryList);
+  let inventoryParse = JSON.parse(inventoryList);
 
   const newItem = {
     id: uuid.v4(),
@@ -81,22 +79,21 @@ router.post("/add", (req,res)=>{
     status: req.body.stauts,
     warehouseName: req.body.warehouseName,
     warehouseId: whID
-  }
-  
+  };
 
-  if (Object.keys(newItem.length === 0)){
-    return res.status(403).send("Empty Values found")
-  }
-  else if (req.body.quantity < 0){
-    return res.status(403).send("Quantity cannot be less than 0")
-  }
-  else{
-    inventoryParse.push(newItem)
-  }
-  fs.writeFileSync("../data/inventories.json", JSON.stringify(inventory))
-  res.status(201).send(inventoryParse)
 
-})
->>>>>>> 01e5b221425159d0226bb3e27c7ea86c0d6be737
+  if (Object.keys(newItem.length === 0)) {
+    return res.status(403).send("Empty Values found");
+  }
+  else if (req.body.quantity < 0) {
+    return res.status(403).send("Quantity cannot be less than 0");
+  }
+  else {
+    inventoryParse.push(newItem);
+  }
+  fs.writeFileSync("../data/inventories.json", JSON.stringify(inventory));
+  res.status(201).send(inventoryParse);
+
+});
 
 module.exports = router;
