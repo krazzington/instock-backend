@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const PORT = 8080;
-const warehouseRoute = require('./routes/warehouse')
+
 
 const inventoryRoute = require('./routes/inventory');
 const warehouseRoute = require('./routes/warehouse');

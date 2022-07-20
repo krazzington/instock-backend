@@ -63,7 +63,7 @@ router.post("/add", (req,res)=>{
     description: req.body.description,
     quantity: req.body.quantity,
     category: req.body.category,
-    status: req.body.stauts,
+    status: req.body.status,
     warehouseName: req.body.warehouseName,
     warehouseId: whID
   }
@@ -81,6 +81,11 @@ router.post("/add", (req,res)=>{
   fs.writeFileSync("../data/inventories.json", JSON.stringify(inventory))
   res.status(201).send(inventoryParse)
 
+})
+
+//GET inventories for a warehouse - MIKE
+router.get('/:id', (req, res) => {
+    res.status(200).send('success')
 })
 
 module.exports = router;
