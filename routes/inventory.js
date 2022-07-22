@@ -76,7 +76,7 @@ router.post("/add", (req, res) => {
     description: req.body.description,
     quantity: req.body.quantity,
     category: req.body.category,
-    status: req.body.stauts,
+    status: req.body.status,
     warehouseName: req.body.warehouseName,
     warehouseId: whID
   };
@@ -96,41 +96,12 @@ router.post("/add", (req, res) => {
 
 });
 
-
-router.patch("/:id", (req,res)=>{
-  let warehouseList = fs.readFileSync("./data/warehouses.json");
-  let warehouseParse = JSON.parse(warehouseList);
-  let whID = warehouseParse.filter((warehouse)=> warehouse.name === req.params.id)
-
-  let inventoryList = fs.readFileSync("./data/inventories.json");
-    let inventoryParse = JSON.parse(inventoryList);
-    let inventoryID = inventoryParse.filter((inventory)=> inventory.id === req.params.id)
-
-  const updatedItem = {
-    id: inventoryID,
-    itemName: req.body.itemName,
-    description: req.body.description,
-    quantity: req.body.quantity,
-    category: req.body.category,
-    status: req.body.stauts,
-    warehouseName: req.body.warehouseName,
-    warehouseId: whID
-  }
+//GET inventories for a warehouse - MIKE
+router.get('/:id/items', (req, res) => {
+  const getWare = inventory.filter(inv => inv.warehouseID === req.params.id);
   
-
-  if (Object.keys(updatedItem.length === 0)){
-    return res.status(403).send("Empty Values found")
-  }
-  else if (req.body.quantity < 0){
-    return res.status(403).send("Quantity cannot be less than 0")
-  }
-  else{
-    inventoryParse.push(updatedItem)
-  }
-  fs.writeFileSync("../data/inventories.json", JSON.stringify(inventory))
-  res.status(201).send(inventoryParse)
+  res.json(getWare);
 
 })
-
 
 module.exports = router;

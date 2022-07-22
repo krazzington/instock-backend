@@ -115,11 +115,15 @@ router.delete("/:id", (req, res) => {
 });
 
 router.patch('/:id', (req, res) => {
-
-    const item = warehouses.findIndex((item) => item.id === req.params.id);
-    warehouses.splice(item, 1);
+    const updatedItem = warehouses.findIndex((item) => item.id === req.params.id);
+    if (req.body.name != null) {
+      updatedItem.name = req.body.name
+    }
     
-    fs.writeFileSync('./data/warehouses.json', JSON.stringify(warehouses));
+    
+    
+    
+    
     
     try {
         if (warehouses) {
@@ -138,7 +142,7 @@ router.patch('/:id', (req, res) => {
             email: email
         }
     })
-    fs.writeFileSync('data/warehouses.json', JSON.stringify(warehouses))
+    fs.writeFileSync('./data/warehouses.json', JSON.stringify(warehouses))
     res.status(200).json(warehouses);
 } else {
     res.status(404).json({errorDetails: "All fields are mandatory for submission"})
