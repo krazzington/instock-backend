@@ -97,8 +97,11 @@ router.post("/add", (req, res) => {
 });
 
 //GET inventories for a warehouse - MIKE
-router.get('/:id', (req, res) => {
-    res.status(200).send('success')
+router.get('/:id/items', (req, res) => {
+  const getWare = inventory.filter(inv => inv.warehouseID === req.params.id);
+  
+  res.json(getWare);
+
 })
 
 module.exports = router;
