@@ -76,7 +76,7 @@ router.post("/add", (req, res) => {
     description: req.body.description,
     quantity: req.body.quantity,
     category: req.body.category,
-    status: req.body.stauts,
+    status: req.body.status,
     warehouseName: req.body.warehouseName,
     warehouseId: whID
   };
@@ -95,5 +95,13 @@ router.post("/add", (req, res) => {
   res.status(201).send(inventoryParse);
 
 });
+
+//GET inventories for a warehouse - MIKE
+router.get('/:id/items', (req, res) => {
+  const getWare = inventory.filter(inv => inv.warehouseID === req.params.id);
+  
+  res.json(getWare);
+
+})
 
 module.exports = router;
