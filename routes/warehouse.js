@@ -27,20 +27,19 @@ router.post('/', (req, res) => {
         address,
         city,
         country,
-        contactName,
-        position,
-        phone,
-        email,
+        contact
       } = req.body;
+      console.log(name, address, city, country, contact)
       if (
         name &&
         address &&
         city &&
         country &&
-        contactName &&
-        position &&
-        phoneValidation(phone) &&
-        emailValidation(email)
+        contact &&
+        (contact.name) &&
+        (contact.position) &&
+        phoneValidation(contact.phone) &&
+        emailValidation(contact.email)
       ) {
         warehouses.push({
           id: uuid.v4(),
@@ -48,15 +47,11 @@ router.post('/', (req, res) => {
           address: address,
           city: city,
           country: country,
-          contact: {
-            name: contactName,
-            position: position,
-            phone: phone,
-            email: email,
-          },
+          contact: contact
         });
         fs.writeFileSync('data/warehouses.json', JSON.stringify(warehouses));
-        res.status(200).json(warehouses);
+        res.status(200).send('Warehouse Created');
+        
       } else {
         res
           .status(404)
@@ -66,7 +61,7 @@ router.post('/', (req, res) => {
       res.status(404).json({ errorDetails: 'Warehouse could not be found' });
     }
   } catch (error) {
-    req.sendStatus(500);
+    res.sendStatus(500);
   }
 });
 
@@ -115,23 +110,55 @@ router.delete("/:id", (req, res) => {
 });
 
 router.patch('/:id', (req, res) => {
-    const updatedItem = warehouses.findIndex((item) => item.id === req.params.id);
-    if (req.body != null) {
-      updatedItem = {
-        name: req.body.name,
-        address: req.body.address,
-        city: req.body.city,
-        country: req.body.country,
-        contactName: req.body.contactName,
-        position: req.body.position,
-        phone: req.body.phone,
-        email: req.body.email
+  //Get new warehouse list without the current listing
+  const newWarehouses = warehouses.filter((item) => item.id !== req.params.id);
+  try {
+    if (warehouses) {
+      //Extract values from the req.body
+      const {
+        name,
+        address,
+        city,
+        country,
+        contact
+      } = req.body;
+      console.log(name, address, city, country, contact)
+      if (
+      //Validate the front end data
+        name &&
+        address &&
+        city &&
+        country &&
+        contact &&
+        (contact.name) &&
+        (contact.position) &&
+        phoneValidation(contact.phone) &&
+        emailValidation(contact.email)
+      ) {
+        //Push the new values to the new warehouse list
+        newWarehouses.push({
+          id: req.params.id,
+          name: name,
+          address: address,
+          city: city,
+          country: country,
+          contact: contact
+        });
+        fs.writeFileSync('data/warehouses.json', JSON.stringify(newWarehouses));
+        res.status(200).send('Warehouse Created');
+        
+      } else {
+        res
+          .status(404)
+          .json({ errorDetails: 'All fields are mandatory for submission' });
       }
-      
     } else {
-    res.status(404).json({errorDetails: "All fields are mandatory for submission"})
-}
-
+      res.status(404).json({ errorDetails: 'Warehouse could not be found' });
+    }
+  } catch (error) {
+    res.sendStatus(500);
+  }
 });
+
 
 module.exports = router;
