@@ -19,6 +19,7 @@ const phoneValidation = (phone) => {
   return phoneRegularExpression.test(phone);
 };
 
+//post/create a new warehouse
 router.post('/', (req, res) => {
   try {
     if (warehouses) {
@@ -27,20 +28,19 @@ router.post('/', (req, res) => {
         address,
         city,
         country,
-        contactName,
-        position,
-        phone,
-        email,
+        contact
       } = req.body;
+      console.log(name, address, city, country, contact)
       if (
         name &&
         address &&
         city &&
         country &&
-        contactName &&
-        position &&
-        phoneValidation(phone) &&
-        emailValidation(email)
+        contact &&
+        (contact.name) &&
+        (contact.position) &&
+        phoneValidation(contact.phone) &&
+        emailValidation(contact.email)
       ) {
         warehouses.push({
           id: uuid.v4(),
@@ -48,15 +48,11 @@ router.post('/', (req, res) => {
           address: address,
           city: city,
           country: country,
-          contact: {
-            name: contactName,
-            position: position,
-            phone: phone,
-            email: email,
-          },
+          contact: contact
         });
         fs.writeFileSync('data/warehouses.json', JSON.stringify(warehouses));
-        res.status(200).json(warehouses);
+        res.status(200).send('Warehouse Created');
+        
       } else {
         res
           .status(404)
@@ -66,7 +62,7 @@ router.post('/', (req, res) => {
       res.status(404).json({ errorDetails: 'Warehouse could not be found' });
     }
   } catch (error) {
-    req.sendStatus(500);
+    res.sendStatus(500);
   }
 });
 
