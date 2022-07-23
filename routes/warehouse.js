@@ -116,43 +116,19 @@ router.delete("/:id", (req, res) => {
 
 router.patch('/:id', (req, res) => {
     const updatedItem = warehouses.findIndex((item) => item.id === req.params.id);
-    if (req.body.name != null) {
-      updatedItem.name = req.body.name
-    }
-    
-    
-    
-    
-    
-    
-    try {
-        if (warehouses) {
-    const { id, name, address, city, country, contactName, position, phone, email } = req.body
-    if (name && address && city && country && contactName && position && phoneValidation(phone) && emailValidation(email)){
-    warehouses.push({
-        id: id,
-        name: name,
-        address: address,
-        city: city,
-        country: country,
-        contact: {
-            name: contactName,
-            position: position,
-            phone: phone,
-            email: email
-        }
-    })
-    fs.writeFileSync('./data/warehouses.json', JSON.stringify(warehouses))
-    res.status(200).json(warehouses);
-} else {
+    if (req.body != null) {
+      updatedItem.name = req.body.name,
+      updatedItem.address = req.body.address,
+      updatedItem.city = req.body.city,
+      updatedItem.country = req.body.country,
+      updatedItem.contactName = req.body.contactName,
+      updatedItem.position = req.body.position,
+      updatedItem.phone = req.body.phone,
+      updatedItem.email = req.body.email
+    } else {
     res.status(404).json({errorDetails: "All fields are mandatory for submission"})
 }
-} else {
-    res.status(404).json({errorDetails:"Warehouse could not be found"})
-}
-} catch(error){
-    req.sendStatus(500)
-}
-})
+
+});
 
 module.exports = router;
