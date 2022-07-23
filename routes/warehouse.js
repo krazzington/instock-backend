@@ -117,14 +117,17 @@ router.delete("/:id", (req, res) => {
 router.patch('/:id', (req, res) => {
     const updatedItem = warehouses.findIndex((item) => item.id === req.params.id);
     if (req.body != null) {
-      updatedItem.name = req.body.name,
-      updatedItem.address = req.body.address,
-      updatedItem.city = req.body.city,
-      updatedItem.country = req.body.country,
-      updatedItem.contactName = req.body.contactName,
-      updatedItem.position = req.body.position,
-      updatedItem.phone = req.body.phone,
-      updatedItem.email = req.body.email
+      updatedItem = {
+        name: req.body.name,
+        address: req.body.address,
+        city: req.body.city,
+        country: req.body.country,
+        contactName: req.body.contactName,
+        position: req.body.position,
+        phone: req.body.phone,
+        email: req.body.email
+      }
+      
     } else {
     res.status(404).json({errorDetails: "All fields are mandatory for submission"})
 }

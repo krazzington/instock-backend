@@ -102,6 +102,25 @@ router.get('/:id/items', (req, res) => {
   
   res.json(getWare);
 
-})
+});
+
+router.patch('/:id', (req, res) => {
+  const updatedInventory = inventory.findIndex((item) => item.id === req.params.id);
+  if (req.body != null) {
+     updatedInventory = {
+      id: req.body.id,
+      itemName: req.body.itemName,
+      description: req.body.description,
+      quantity: req.body.quantity,
+      category: req.body.category,
+      status: req.body.status,
+      warehouseName: req.body.warehouseName,
+      warehouseId: whID
+    };
+  } else {
+  res.status(404).json({errorDetails: "All fields are mandatory for submission"})
+}
+
+});
 
 module.exports = router;
