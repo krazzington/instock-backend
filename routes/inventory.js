@@ -105,6 +105,7 @@ router.get('/:id/items', (req, res) => {
 });
 
 router.patch('/:id', (req, res) => {
+  let whID = warehouseParse.filter((warehouse) => warehouse.name === req.params.id);
   const updatedInventory = inventory.findIndex((item) => item.id === req.params.id);
   if (req.body != null) {
      updatedInventory = {
