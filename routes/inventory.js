@@ -145,7 +145,7 @@ router.patch('/:id', (req, res) => {
           warehouseName: warehouseName,
           warehouseID: warehouseID
         });
-        fs.writeFileSync('data/inventory.json', JSON.stringify(newInventory));
+        fs.writeFileSync('data/inventories.json', JSON.stringify(newInventory));
         res.status(200).send('Inventory Created');
         
       } else {
