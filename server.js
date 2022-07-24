@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const app = express();
 const PORT = 8080;
 
@@ -20,6 +21,8 @@ app.use(express.json());
 app.use('/inventory', inventoryRoute);
 // warehouse route
 app.use('/warehouse', warehouseRoute);
+
+
 
 app.listen(PORT, () => {
   console.log('connected to port 8080');

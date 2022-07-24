@@ -110,4 +110,56 @@ router.delete("/:id", (req, res) => {
   res.send(warehouses);
 });
 
+router.patch('/:id', (req, res) => {
+  //Get new warehouse list without the current listing
+  const newWarehouses = warehouses.filter((item) => item.id !== req.params.id);
+  try {
+    if (warehouses) {
+      //Extract values from the req.body
+      const {
+        name,
+        address,
+        city,
+        country,
+        contact
+      } = req.body;
+      console.log(name, address, city, country, contact)
+      if (
+      //Validate the front end data
+        name &&
+        address &&
+        city &&
+        country &&
+        contact &&
+        (contact.name) &&
+        (contact.position) &&
+        phoneValidation(contact.phone) &&
+        emailValidation(contact.email)
+      ) {
+        //Push the new values to the new warehouse list
+        newWarehouses.push({
+          id: req.params.id,
+          name: name,
+          address: address,
+          city: city,
+          country: country,
+          contact: contact
+        });
+        fs.writeFileSync('data/warehouses.json', JSON.stringify(newWarehouses));
+        res.status(200).send('Warehouse Created');
+        
+      } else {
+        res
+          .status(404)
+          .json({ errorDetails: 'All fields are mandatory for submission' });
+      }
+    } else {
+      res.status(404).json({ errorDetails: 'Warehouse could not be found' });
+    }
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+
 module.exports = router;

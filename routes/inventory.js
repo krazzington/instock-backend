@@ -102,6 +102,63 @@ router.get('/:id/items', (req, res) => {
   
   res.json(getWare);
 
-})
+});
+
+router.patch('/:id', (req, res) => {
+  let warehouseList = fs.readFileSync("./data/warehouses.json");
+  let warehouseParse = JSON.parse(warehouseList);
+  let whID = warehouseParse.filter((warehouse) => warehouse.name === req.params.id);
+
+
+  const newInventory = inventory.filter((item) => item.id !== req.params.id);
+  try {
+    if (inventory) {
+      //Extract values from the req.body
+      const {
+        itemName,
+        description,
+        quantity,
+        category,
+        status,
+        warehouseName,
+        warehouseID
+      } = req.body;
+      console.log(itemName, description, quantity, category, status, warehouseName, warehouseID)
+      if (
+      //Validate the front end data
+        itemName &&
+        description &&
+        quantity &&
+        category &&
+        status &&
+        warehouseName &&
+        warehouseID 
+      ) {
+        //Push the new values to the new warehouse list
+        newInventory.push({
+          id: req.params.id,
+          itemName: itemName,
+          description: description,
+          quantity: quantity,
+          category: category,
+          status: status,
+          warehouseName: warehouseName,
+          warehouseID: warehouseID
+        });
+        fs.writeFileSync('data/inventories.json', JSON.stringify(newInventory));
+        res.status(200).send('Inventory Created');
+        
+      } else {
+        res
+          .status(404)
+          .json({ errorDetails: 'All fields are mandatory for submission' });
+      }
+    } else {
+      res.status(404).json({ errorDetails: 'Warehouse could not be found' });
+    }
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
 
 module.exports = router;
