@@ -162,4 +162,27 @@ router.patch('/:id', (req, res) => {
 });
 
 
+router.get('/:id', (req, res) => {
+  try {
+    // array that contains items id
+    const idItem = [];
+
+    //map inventory to store git
+    warehouse.map((item) => {
+      return idItem.push(item.id);
+    });
+
+    // validation to check if the array of idItems contain the params id information.
+    if (!idItem.includes(req.params.id)) {
+      res.status(400).send(`Bad Request`);
+      return;
+    }
+
+    // response with item detail based on the id
+    res.status(200).json(warehouse.find((item) => item.id === req.params.id));
+  } catch (error) {
+    res.status(500);
+  }
+});
+
 module.exports = router;
